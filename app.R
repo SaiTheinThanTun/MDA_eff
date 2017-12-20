@@ -438,42 +438,15 @@ server <- function(input, output, session) {
     par(mfrow=c(2,2), cex=.5)
     
     #0
-    maxy<-max(finclin0,input$API/12)
+    maxy<-max(finclin0,finclin1,input$API/12)
     x<-times[(runin:length(clinmonth_det0[,1]))]
-    y1<-clinmonth_det0[runin:length(clinmonth_det0[,1]),1]
-    y2<-clinmonth_tot0[runin:length(clinmonth_tot0[,1]),1]
-    
-    plot(x,y1, type='l',lty=1,col=rgb(0,0,0,alpha=0.1),xlab = "Time",ylab="incidence per 1000 per month",main="Monthly cases per 1000 population (village 1)",ylim=c(0,maxy),lwd=2)
-    lines(x,y2, type='l',lty=1,col=rgb(0,0,0,alpha=0.1),lwd=2)
-    
-    polygon(c(x,rev(x)),c(y2,rev(y1)),col=rgb(0,0,0,alpha=0.1),border=NA)
-    
     y1<-clinmonth_det0[runin:length(clinmonth_det0[,1]),2]
     y2<-clinmonth_tot0[runin:length(clinmonth_tot0[,1]),2]
-    lines(x,y1, type='l',lty=1,col=rgb(0,0,1,alpha=0.4),lwd=2)
-    lines(x,y2, type='l',lty=1,col=rgb(0,0,1,alpha=0.4),lwd=2)
     
-    polygon(c(x,rev(x)),c(y2,rev(y1)),col=rgb(0,0,1,alpha=0.4),border=NA)
+    plot(x,y1, type='l',lty=1,col=rgb(1,0,0,alpha=0.1),xlab = "Time",ylab="incidence per 1000 per month",main="Monthly cases per 1000 population (village 1)",ylim=c(0,maxy),lwd=2)
+    lines(x,y2, type='l',lty=1,col=rgb(1,0,0,alpha=0.1),lwd=2)
     
-    lines(c(2018,2018),c(-maxy,2*maxy),col="dark grey",lty=3,lwd=2)
-    
-    abline(h=input$API/12,col="dark blue",lty=1,lwd=1)
-    abline(h=1/12,col="red",lty=3,lwd=3)
-    maxy<-finprev0
-    plot(times[(runin:length(prevalence0[,1]))],prevalence0[(runin:length(prevalence0[,1])),1], type='l',lty=1,col=rgb(0,0,0,alpha=0.25),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence (village 1)",ylim=c(0,maxy),lwd=6)
-    lines(times[(runin:length(prevalence0[,1]))],prevalence0[(runin:length(prevalence0[,1])),2], type='l',lty=1,col=rgb(0,0,1,alpha=0.6),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence (village 1)",ylim=c(0,maxy),lwd=6)
-    lines(c(2018,2018),c(-maxy,2*maxy),col="dark grey",lty=3,lwd=2)
-    
-    #1
-    maxy<-max(finclin1,input$API/12)
-    x<-times[(runin:length(clinmonth_det1[,1]))]
-    y1<-clinmonth_det1[runin:length(clinmonth_det1[,1]),1]
-    y2<-clinmonth_tot1[runin:length(clinmonth_tot1[,1]),1]
-    
-    plot(x,y1, type='l',lty=1,col=rgb(0,0,0,alpha=0.1),xlab = "Time",ylab="incidence per 1000 per month",main="Monthly cases per 1000 population (village 2)",ylim=c(0,maxy),lwd=2)
-    lines(x,y2, type='l',lty=1,col=rgb(0,0,0,alpha=0.1),lwd=2)
-    
-    polygon(c(x,rev(x)),c(y2,rev(y1)),col=rgb(0,0,0,alpha=0.1),border=NA)
+    polygon(c(x,rev(x)),c(y2,rev(y1)),col=rgb(1,0,0,alpha=0.1),border=NA)
     
     y1<-clinmonth_det1[runin:length(clinmonth_det1[,1]),2]
     y2<-clinmonth_tot1[runin:length(clinmonth_tot1[,1]),2]
@@ -486,9 +459,9 @@ server <- function(input, output, session) {
     
     abline(h=input$API/12,col="dark blue",lty=1,lwd=1)
     abline(h=1/12,col="red",lty=3,lwd=3)
-    maxy<-finprev1
-    plot(times[(runin:length(prevalence1[,1]))],prevalence1[(runin:length(prevalence1[,1])),1], type='l',lty=1,col=rgb(0,0,0,alpha=0.25),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence (village 2)",ylim=c(0,maxy),lwd=6)
-    lines(times[(runin:length(prevalence1[,1]))],prevalence1[(runin:length(prevalence1[,1])),2], type='l',lty=1,col=rgb(0,0,1,alpha=0.6),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence (village 2)",ylim=c(0,maxy),lwd=6)
+    maxy<-max(finprev0,finprev1)
+    plot(times[(runin:length(prevalence0[,1]))],prevalence0[(runin:length(prevalence0[,1])),2], type='l',lty=1,col=rgb(1,0,0,alpha=0.25),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence (village 1)",ylim=c(0,maxy),lwd=6)
+    lines(times[(runin:length(prevalence1[,1]))],prevalence1[(runin:length(prevalence1[,1])),2], type='l',lty=1,col=rgb(0,0,1,alpha=0.6),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence (village 1)",ylim=c(0,maxy),lwd=6)
     lines(c(2018,2018),c(-maxy,2*maxy),col="dark grey",lty=3,lwd=2)
     
   }
