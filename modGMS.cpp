@@ -117,10 +117,10 @@ List modGMSrcpp(double t, NumericVector state, NumericVector parameters)
   double IRSscale =parameters["IRSscale"];
   double MSATscale=parameters["MSATscale"];
   double bh_max =parameters["bh_max"];
-  double commute0 = parameters["commute0"];
-    commute0 = commute0/100;
-  double commute1 = parameters["commute1"];
-  commute1 = commute1/100;
+  //double commute0 = parameters["commute0"];
+    //commute0 = commute0/100;
+  //double commute1 = parameters["commute1"];
+  //commute1 = commute1/100;
   double homogen = parameters["homogen"];
     homogen = homogen/100;
   double startyear=2007;
@@ -159,7 +159,7 @@ List modGMSrcpp(double t, NumericVector state, NumericVector parameters)
   double sRm = Rm_0+Rm_1;
   
   // define variables
-  double P = (sS+sR+sIC+sIA+sIU+sTr+sSm+sRm);
+  //double P = (sS+sR+sIC+sIA+sIU+sTr+sSm+sRm);
   double P0 = (S_0+R_0+IC_0+IA_0+IU_0+Tr_0+Sm_0+Rm_0);
   double P1 = (S_1+R_1+IC_1+IA_1+IU_1+Tr_1+Sm_1+Rm_1);
   

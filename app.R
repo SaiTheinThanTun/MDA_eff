@@ -22,9 +22,9 @@ ui <- fluidPage(
                     sliderInput(inputId="effIRS", label = "% reduction in biting rate due to IRS ", value = 15, min=0, max=25,step=5)
              ),
              column(3,
-                    sliderInput(inputId="muC", label = "imported clinical cases per 1000 population per year ", value = 0, min=0, max=10,step=1),
-                    sliderInput(inputId="muA", label = "imported asymptomatic microscopically detectable carriers per 1000 population per year ", value = 0, min=0, max=100,step=1),
-                    sliderInput(inputId="muU", label = "imported asymptomatic microscopically undetectable carriers per 1000 population per year ", value = 0, min=0, max=100,step=1)
+                    sliderInput(inputId="muC", label = "imported clinical cases per 1000 population per year ", value = 1, min=0, max=10,step=1),
+                    sliderInput(inputId="muA", label = "imported asymptomatic microscopically detectable carriers per 1000 population per year ", value = 1, min=0, max=100,step=1),
+                    sliderInput(inputId="muU", label = "imported asymptomatic microscopically undetectable carriers per 1000 population per year ", value = 1, min=0, max=100,step=1)
              ),
              column(3,
                     sliderInput(inputId="percfail2018", label = "% of cases failing treatment in 2018 and before ", value = 5, min=0, max=100,step=5),
@@ -64,16 +64,16 @@ ui <- fluidPage(
                             
                      ),
                      column(3,
-                            sliderInput(inputId="cmda_1", label = "local population coverage of focal MDA in village 1", value = 90, min=0, max=100,step=10),
-                            sliderInput(inputId="cmda_2", label = "local population coverage of focal MDA in village 2", value = 50, min=0, max=100,step=10),
-                            sliderInput(inputId="commute0", label = "% commuting from village 2 to 1", value = 0, min=0, max=100,step=10),
-                            sliderInput(inputId="commute1", label = "% commuting from village 1 to 2", value = 0, min=0, max=100,step=10),
-                            sliderInput(inputId="homogen", label = "% homogeniety", value = 0, min=0, max=100,step=10)
+                            sliderInput(inputId="cmda_1", label = "local population coverage of MDA in village 1", value = 90, min=0, max=99,step=1),
+                            sliderInput(inputId="cmda_2", label = "local population coverage of MDA in village 2", value = 50, min=0, max=99,step=1),
+                            #sliderInput(inputId="commute0", label = "% commuting from village 2 to 1", value = 0, min=0, max=100,step=10),
+                            #sliderInput(inputId="commute1", label = "% commuting from village 1 to 2", value = 0, min=0, max=100,step=10),
+                            sliderInput(inputId="homogen", label = "% homogeniety", value = 0, min=0, max=100,step=1)
                      ),
                      
                      column(3,
-                            sliderInput(inputId="tm_1", label = "timing of 1st MDA round in 1st village [2018+ no. of month, 1 means Jan'2018, 13 means Jan'2019]", value = 9, min=1, max=36,step=1),
-                            sliderInput(inputId="tm_2", label = "timing of 1st MDA round in 2nd village [2018+ no. of month]", value = 10, min=2, max=36,step=1)
+                            sliderInput(inputId="tm_1", label = "timing of 1st MDA round in 1st village [2018+ no. of month]", value = 9, min=1, max=36,step=1),
+                            sliderInput(inputId="tm_2", label = "timing of 1st MDA round in 2nd village [2018+ no. of month]", value = 9, min=1, max=36,step=1)
                      ),
                      column(3,
                             radioButtons(inputId="VACon", label = "With vaccination: ", choices = c("No"=0, "Yes"=1), selected = 0, inline=TRUE),
@@ -91,7 +91,7 @@ ui <- fluidPage(
                      column(3,
                             sliderInput(inputId="MSATsensC", label = "sensitivity HS RDT (clinical) ", value = 99, min=0, max=100,step=5),
                             sliderInput(inputId="MSATsensA", label = "sensitivity HS RDT (micro detectable, asym)", value = 87, min=0, max=100,step=5),
-                            sliderInput(inputId="MSATsensU", label = "sensitivity HS RDT (micro undetectable, asym)", value = 4, min=0, max=100,step=5)
+                            sliderInput(inputId="MSATsensU", label = "sensitivity HS RDT (micro undetectable, asym)", value = 44, min=0, max=100,step=5)
                      )
             ),
             tabPanel(title= strong("Download"),
@@ -207,9 +207,10 @@ runGMS<-function(initprev, scenario, param)
   
   state <- c(Y = 0, Cinc_det0 = 0, Cinc_tot0 = 0, 
              S_0 = initS_0, IC_0 = initIC_0, IA_0 = initIA_0, IU_0 = initIU_0, R_0 = initR_0, Tr_0 = initTr_0, Sm_0 = 0, Rm_0 = 0,
-             S_1 = initS_0, IC_1 = initIC_0, IA_1 = initIA_0, IU_1 = 0, R_1 = 0, Tr_1 = 0, Sm_1 = 0, Rm_1 = 0,
+             S_1 = initS_0, IC_1 = initIC_0, IA_1 = initIA_0, IU_1 = initIU_0, R_1 = initR_0, Tr_1 = initTr_0, Sm_1 = 0, Rm_1 = 0,
              Cinc_det1 = 0, Cinc_tot1 = 0
   )
+  #S_1 = 0, IC_1 = initIC_0, IA_1 = initIA_0, IU_1 = initIU_0, R_1 = 0, Tr_1 = 0, Sm_1 = 0, Rm_1 = 0,
   
   
   #out <- ode(y = state, times = times, func = modGMS, parms = parameters)
@@ -342,8 +343,8 @@ server <- function(input, output, session) {
     effv_2 = input$effv_2,
     
     vh = input$vh,
-    commute0 = input$commute0,
-    commute1 = input$commute1,
+    #commute0 = input$commute0,
+    #commute1 = input$commute1,
     homogen = input$homogen
   ))
   
@@ -435,7 +436,7 @@ server <- function(input, output, session) {
     finprev1<-max(prevalence1[(runin:length(prevalence1[,1])),])
     
     # PLOTTING
-    par(mfrow=c(2,2), cex=.5)
+    par(mfrow=c(1,2), cex=.5)
     
     #0
     maxy<-max(finclin0,finclin1,input$API/12)
@@ -443,7 +444,7 @@ server <- function(input, output, session) {
     y1<-clinmonth_det0[runin:length(clinmonth_det0[,1]),2]
     y2<-clinmonth_tot0[runin:length(clinmonth_tot0[,1]),2]
     
-    plot(x,y1, type='l',lty=1,col=rgb(1,0,0,alpha=0.1),xlab = "Time",ylab="incidence per 1000 per month",main="Monthly cases per 1000 population (village 1)",ylim=c(0,maxy),lwd=2)
+    plot(x,y1, type='l',lty=1,col=rgb(1,0,0,alpha=0.1),xlab = "Time",ylab="incidence per 1000 per month",main="Monthly cases per 1000 population",ylim=c(0,maxy),lwd=2)
     lines(x,y2, type='l',lty=1,col=rgb(1,0,0,alpha=0.1),lwd=2)
     
     polygon(c(x,rev(x)),c(y2,rev(y1)),col=rgb(1,0,0,alpha=0.1),border=NA)
@@ -460,8 +461,8 @@ server <- function(input, output, session) {
     abline(h=input$API/12,col="dark blue",lty=1,lwd=1)
     abline(h=1/12,col="red",lty=3,lwd=3)
     maxy<-max(finprev0,finprev1)
-    plot(times[(runin:length(prevalence0[,1]))],prevalence0[(runin:length(prevalence0[,1])),2], type='l',lty=1,col=rgb(1,0,0,alpha=0.25),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence (village 1)",ylim=c(0,maxy),lwd=6)
-    lines(times[(runin:length(prevalence1[,1]))],prevalence1[(runin:length(prevalence1[,1])),2], type='l',lty=1,col=rgb(0,0,1,alpha=0.6),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence (village 1)",ylim=c(0,maxy),lwd=6)
+    plot(times[(runin:length(prevalence0[,1]))],prevalence0[(runin:length(prevalence0[,1])),2], type='l',lty=1,col=rgb(1,0,0,alpha=0.25),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence",ylim=c(0,maxy),lwd=6)
+    lines(times[(runin:length(prevalence1[,1]))],prevalence1[(runin:length(prevalence1[,1])),2], type='l',lty=1,col=rgb(0,0,1,alpha=0.6),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence",ylim=c(0,maxy),lwd=6)
     lines(c(2018,2018),c(-maxy,2*maxy),col="dark grey",lty=3,lwd=2)
     
   }
