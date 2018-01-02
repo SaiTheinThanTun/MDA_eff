@@ -203,7 +203,7 @@ List modGMSrcpp(double t, NumericVector state, NumericVector parameters)
   //double lam_0 = (1-(cmda_1*v_0))*lam;
   //double lam_0 = lam0;
   double lam_1 = (1-(cmda_2*v_1))*lam1;
-  //double lam_1 = lam;
+  //double lam_1 = lam1;
   
   double tau = covEDAT;
   
@@ -243,7 +243,7 @@ List modGMSrcpp(double t, NumericVector state, NumericVector parameters)
   double dIA_1 = muA*P1-mu_out*IA_1+(1-ps)*lam_1*S_1+(1-pr)*lam_1*R_1+(1-pr)*lam_1*IU_1-pr*lam_1*IA_1+nuC*IC_1-nuA*IA_1+fail*nuTr*Tr_1-m_1*IA_1;  //15
   double dIU_1 = muU*P1-mu_out*IU_1-lam_1*IU_1-nuU*IU_1+nuA*IA_1-m_1*IU_1;                                                                        //16
   double dR_1 = -mu_out*R_1-omega*R_1-lam_1*R_1+nuU*IU_1 +lossd*Rm_1-m_1*R_1;                                                                //17
-  double dTr_1 = -mu_out*Tr_1+ps*tau*lam_1*S_1+pr*tau*lam_1*R_1+pr*tau*lam_1*IU_1+pr*tau*lam_1*IA_1-nuTr*Tr_1+m_1*(IC_0+IA_0+IU_0);      //18
+  double dTr_1 = -mu_out*Tr_1+ps*tau*lam_1*S_1+pr*tau*lam_1*R_1+pr*tau*lam_1*IU_1+pr*tau*lam_1*IA_1-nuTr*Tr_1+m_1*(IC_1+IA_1+IU_1);      //18
   double dSm_1 = -mu_out*Sm_1+omega*Rm_1-lossd*Sm_1+m_1*S_1;                                                                             //19
   double dRm_1 = -mu_out*Rm_1-omega*Rm_1+(1-fail)*nuTr*Tr_1-lossd*Rm_1+m_1*R_1;                                                          //20
   double dCinc_det1 = ps*tau*lam_1*S_1+pr*tau*lam_1*R_1+pr*tau*lam_1*IU_1+pr*tau*lam_1*IA_1;                           //3 // Additional file: Equation no.12

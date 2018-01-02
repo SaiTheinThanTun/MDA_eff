@@ -73,7 +73,8 @@ ui <- fluidPage(
                      
                      column(3,
                             sliderInput(inputId="tm_1", label = "timing of 1st MDA round in 1st village [2018+ no. of month]", value = 9, min=1, max=36,step=1),
-                            sliderInput(inputId="tm_2", label = "timing of 1st MDA round in 2nd village [2018+ no. of month]", value = 9, min=1, max=36,step=1)
+                            sliderInput(inputId="tm_2", label = "timing of 1st MDA round in 2nd village [2018+ no. of month]", value = 9, min=1, max=36,step=1),
+                            sliderInput(inputId="p1v", label = "proportion of total in village 1 (remaining is in village 2)", value = .5, min=0.01, max=.99,step=.1)
                      ),
                      column(3,
                             radioButtons(inputId="VACon", label = "With vaccination: ", choices = c("No"=0, "Yes"=1), selected = 0, inline=TRUE),
@@ -206,10 +207,16 @@ runGMS<-function(initprev, scenario, param)
   initTr_0<-0
   
   state <- c(Y = 0, Cinc_det0 = 0, Cinc_tot0 = 0, 
-             S_0 = initS_0, IC_0 = initIC_0, IA_0 = initIA_0, IU_0 = initIU_0, R_0 = initR_0, Tr_0 = initTr_0, Sm_0 = 0, Rm_0 = 0,
-             S_1 = initS_0, IC_1 = initIC_0, IA_1 = initIA_0, IU_1 = initIU_0, R_1 = initR_0, Tr_1 = initTr_0, Sm_1 = 0, Rm_1 = 0,
+             S_0 = as.vector(param["p1v"])*initS_0, IC_0 = initIC_0, IA_0 = as.vector(param["p1v"])*initIA_0, IU_0 = initIU_0, R_0 = as.vector(param["p1v"])*initR_0, Tr_0 = initTr_0, Sm_0 = 0, Rm_0 = 0,
+             S_1 = (1-as.vector(param["p1v"]))*initS_0, IC_1 = initIC_0, IA_1 = (1-as.vector(param["p1v"]))*initIA_0, IU_1 = initIU_0, R_1 = (1-as.vector(param["p1v"]))*initR_0, Tr_1 = initTr_0, Sm_1 = 0, Rm_1 = 0,
              Cinc_det1 = 0, Cinc_tot1 = 0
   )
+  
+  # state <- c(Y = 0, Cinc_det0 = 0, Cinc_tot0 = 0, 
+  #            S_0 = initS_0, IC_0 = initIC_0, IA_0 = initIA_0, IU_0 = initIU_0, R_0 = initR_0, Tr_0 = initTr_0, Sm_0 = 0, Rm_0 = 0,
+  #            S_1 = initS_0, IC_1 = initIC_0, IA_1 = initIA_0, IU_1 = initIU_0, R_1 = initR_0, Tr_1 = initTr_0, Sm_1 = 0, Rm_1 = 0,
+  #            Cinc_det1 = 0, Cinc_tot1 = 0
+  # )
   #S_1 = 0, IC_1 = initIC_0, IA_1 = initIA_0, IU_1 = initIU_0, R_1 = 0, Tr_1 = 0, Sm_1 = 0, Rm_1 = 0,
   
   
@@ -345,7 +352,8 @@ server <- function(input, output, session) {
     vh = input$vh,
     #commute0 = input$commute0,
     #commute1 = input$commute1,
-    homogen = input$homogen
+    homogen = input$homogen,
+    p1v = input$p1v
   ))
   
   #getting back previous parameters
@@ -436,7 +444,7 @@ server <- function(input, output, session) {
     finprev1<-max(prevalence1[(runin:length(prevalence1[,1])),])
     
     # PLOTTING
-    par(mfrow=c(1,2), cex=.5)
+    par(mfrow=c(1,2), cex=1.5)
     
     #0
     maxy<-max(finclin0,finclin1,input$API/12)
