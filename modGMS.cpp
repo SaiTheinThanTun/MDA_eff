@@ -116,7 +116,8 @@ List modGMSrcpp(double t, NumericVector state, NumericVector parameters)
   double ITNscale=parameters["ITNscale"] ;
   double IRSscale =parameters["IRSscale"];
   double MSATscale=parameters["MSATscale"];
-  double bh_max =parameters["bh_max"];
+  double bh_max0 =parameters["bh_max0"];
+  double bh_max1 =parameters["bh_max1"];
   //double commute0 = parameters["commute0"];
     //commute0 = commute0/100;
   //double commute1 = parameters["commute1"];
@@ -164,10 +165,12 @@ List modGMSrcpp(double t, NumericVector state, NumericVector parameters)
   double P1 = (S_1+R_1+IC_1+IA_1+IU_1+Tr_1+Sm_1+Rm_1);
   
   double seas=1+alpha*cos(2*3.14159*(Y-phi));
-  double bh=bh_max/(1+alpha);
+  double bh0=bh_max0/(1+alpha);
+  double bh1=bh_max1/(1+alpha);
   
   // Additional file: Equation no.10
-  double beta=seas*b*epsilonh*epsilonm*bh/((bh*epsilonh+deltam)*(gammam/(gammam+deltam)));
+  double beta0=seas*b*epsilonh*epsilonm*bh0/((bh0*epsilonh+deltam)*(gammam/(gammam+deltam)));
+  double beta1=seas*b*epsilonh*epsilonm*bh1/((bh1*epsilonh+deltam)*(gammam/(gammam+deltam)));
   
   double mu_out = mu+muC+muA+muU;
   
@@ -190,8 +193,8 @@ List modGMSrcpp(double t, NumericVector state, NumericVector parameters)
   //double lam = (1-(1-eta)*effIRS*covIRS)*(1-effITN*covITN)*beta*(sIC+sTr+rhoa*sIA+rhou*sIU)/P;
   //double lam0 = (1-(1-eta)*effIRS*covIRS)*(1-effITN*covITN)*beta*(((IC_0+Tr_0+rhoa*IA_0+rhou*IU_0))+(commute0*(IC_1+Tr_1+rhoa*IA_1+rhou*IU_1)))/(P0+commute0*P1);
   //double lam1 = (1-(1-eta)*effIRS*covIRS)*(1-effITN*covITN)*beta*((commute1*(IC_0+Tr_0+rhoa*IA_0+rhou*IU_0))+((IC_1+Tr_1+rhoa*IA_1+rhou*IU_1)))/(P1+commute1*P0);
-  double lam0 = (1-(1-eta)*effIRS*covIRS)*(1-effITN*covITN)*beta*(((IC_0+Tr_0+rhoa*IA_0+rhou*IU_0))+(homogen*(IC_1+Tr_1+rhoa*IA_1+rhou*IU_1)))/(P0+homogen*P1);
-  double lam1 = (1-(1-eta)*effIRS*covIRS)*(1-effITN*covITN)*beta*((homogen*(IC_0+Tr_0+rhoa*IA_0+rhou*IU_0))+((IC_1+Tr_1+rhoa*IA_1+rhou*IU_1)))/(P1+homogen*P0);
+  double lam0 = (1-(1-eta)*effIRS*covIRS)*(1-effITN*covITN)*beta0*(((IC_0+Tr_0+rhoa*IA_0+rhou*IU_0))+(homogen*(IC_1+Tr_1+rhoa*IA_1+rhou*IU_1)))/(P0+homogen*P1);
+  double lam1 = (1-(1-eta)*effIRS*covIRS)*(1-effITN*covITN)*beta1*((homogen*(IC_0+Tr_0+rhoa*IA_0+rhou*IU_0))+((IC_1+Tr_1+rhoa*IA_1+rhou*IU_1)))/(P1+homogen*P0);
   
   // vaccine effects
   // Additional file: Equation no.15

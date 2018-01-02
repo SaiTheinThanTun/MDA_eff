@@ -11,7 +11,6 @@ ui <- fluidPage(
     tabPanel(title = strong("Baseline"),
              column(3,
                     sliderInput(inputId="API", label = "baseline API", value = 10, min=1, max=100,step=0.5),
-                    sliderInput(inputId="bh_max", label = "number of mosquito bites per human per night (peak season)", value = 20, min=0, max=80,step=1), #change range 0-80, Dan's data
                     sliderInput(inputId="eta", label = "% of all infections that are caught outside the village (forest)", value = 30, min=0, max=100,step=10),
                     sliderInput(inputId="covEDAT0", label = "baseline % of all clinical cases treated", value = 25, min=0, max=100)
              ),
@@ -32,6 +31,19 @@ ui <- fluidPage(
                     sliderInput(inputId="percfail2020", label = "% of cases failing treatment in 2020 and after  ", value = 30, min=0, max=100,step=5)
              )
     ),
+    tabPanel(title= strong("Transmissibility"),
+             column(4,
+                    wellPanel(
+                      h3("Human Biting Rate"),
+                      sliderInput(inputId="bh_max0", label = "number of mosquito bites per human per night (peak season) village 1", value = 20, min=0, max=80,step=1),
+                      sliderInput(inputId="bh_max1", label = "number of mosquito bites per human per night (peak season) village 2", value = 20, min=0, max=80,step=1)
+                    )),
+             column(4,
+                    wellPanel(
+                      h3("Transmissibility compared to Clinical cases"),
+                      sliderInput(inputId = "rhoa", label = "relative infectivity of asymptomatic microscopically detectable carriers compared with clinical infections (%)", value = 55, min = 17, max=80,step=1),
+                      sliderInput(inputId = "rhou", label = "relative infectivity of asymptomatic microscopically undetectable carriers compared with clinical infections (%)", value = 17, min = 1, max=60,step=1)
+                    ))),
     
     tabPanel(title = strong("Interventions currently available"),
              column(4,
@@ -186,8 +198,6 @@ runGMS<-function(initprev, scenario, param)
                   nuC = 3,                     # days of symptoms in the absence of treatment [N], #change 9 -> 3
                   nuA = 60,                    # days of asymptomatic microscopically detectable carriage [N]
                   nuU = 100,                    # days of asymptomatic microscopically undetectable carriage [N], #change 60 -> 100, Mean duration of a malaria untreated infection: 160 days, 
-                  rhoa = 55,                   # relative infectivity of asymptomatic microscopically detectable carriers compared with clinical infections (%) [N]
-                  rhou = 17,                   # relative infectivity of asymptomatic microscopically undetectable carriers compared with clinical infections (%) [N]
                   ps = 90,                     # % of all non-immune new infections that are clinical [N]
                   pr = 20,                     # % of all immune new infections that are clinical [N]
                   mu = 50,                      # life expectancy (years) [N]
@@ -310,7 +320,8 @@ server <- function(input, output, session) {
                           VACon = as.numeric(input$VACon)))
   
   parametersR <- reactive(c(
-    bh_max = input$bh_max,                 # bites per human per night
+    bh_max0 = input$bh_max0,                 # bites per human per night
+    bh_max1 = input$bh_max1,
     eta = input$eta,
     covEDAT0 = input$covEDAT0,
     covITN0 = input$covITN0,
@@ -353,7 +364,10 @@ server <- function(input, output, session) {
     #commute0 = input$commute0,
     #commute1 = input$commute1,
     homogen = input$homogen,
-    p1v = input$p1v
+    p1v = input$p1v,
+    
+    rhoa=input$rhoa,
+    rhou=input$rhou
   ))
   
   #getting back previous parameters
