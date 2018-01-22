@@ -10,7 +10,7 @@ ui <- fluidPage(
     id="panels",
     tabPanel(title = strong("Baseline"),
              column(3,
-                    sliderInput(inputId="API", label = "baseline API", value = 10, min=1, max=100,step=0.5),
+                    sliderInput(inputId="API", label = "baseline API", value = 2.5, min=1, max=100,step=0.5),
                     sliderInput(inputId="eta", label = "% of all infections that are caught outside the village (forest)", value = 30, min=0, max=100,step=10),
                     sliderInput(inputId="covEDAT0", label = "baseline % of all clinical cases treated", value = 25, min=0, max=100)
              ),
@@ -35,8 +35,8 @@ ui <- fluidPage(
              column(4,
                     wellPanel(
                       h3("Human Biting Rate"),
-                      sliderInput(inputId="bh_max0", label = "number of mosquito bites per human per night (peak season) village 1", value = 20, min=0, max=80,step=1),
-                      sliderInput(inputId="bh_max1", label = "number of mosquito bites per human per night (peak season) village 2", value = 20, min=0, max=80,step=1)
+                      sliderInput(inputId="bh_max0", label = "number of mosquito bites per human per night (peak season) village 1", value = 16, min=0, max=80,step=1),
+                      sliderInput(inputId="bh_max1", label = "number of mosquito bites per human per night (peak season) village 2", value = 16, min=0, max=80,step=1)
                     )),
              column(4,
                     wellPanel(
@@ -49,14 +49,14 @@ ui <- fluidPage(
              column(4,
                     wellPanel(
                       h3("Early Diagnosis and Treatment"),
-                      checkboxInput(inputId="EDATon", label = "switch on scale up of EDAT ", value = FALSE),
+                      checkboxInput(inputId="EDATon", label = "switch on scale up of EDAT ", value = TRUE),
                       checkboxInput(inputId="primon", label = "ACT+primaquine for EDAT and MDA ", value = FALSE), #under EDAT checkbox
                       sliderInput(inputId="EDATscale", label = "years to scale up EDAT ", value = 1, min=.25, max=3, step=.25),
                       sliderInput(inputId="covEDATi", label = "new % of all clinical cases treated", value = 70, min=0, max=100,step=5)
                     )), 
              column(4,wellPanel(
                       h3("Insecticide Treated Net (LLIN)"),
-                      checkboxInput(inputId="ITNon", label = "switch on scale up of LLIN", value = FALSE),
+                      checkboxInput(inputId="ITNon", label = "switch on scale up of LLIN", value = TRUE),
                       sliderInput(inputId="ITNscale", label = "years to universal access to LLIN", value = 1, min=.25, max=3, step=.25),
                       sliderInput(inputId="covITNi", label = "new bed-net use of LLIN (%)", value = 90, min=0, max=90,step=5)
                     )),
@@ -69,7 +69,7 @@ ui <- fluidPage(
   ),
   tabPanel(title = strong("Interventions under trial: Focal MVDA (hotspot)"),
                      column(3,
-                            checkboxInput(inputId="MDAon", label = "switch on MDA", value = FALSE), #6
+                            checkboxInput(inputId="MDAon", label = "switch on MDA", value = TRUE), #6
                             sliderInput(inputId="lossd", label = "days prophylaxis provided by the ACT", value = 30, min=15, max=30,step=1),
                             sliderInput(inputId="dm0", label = "months to complete MDA in village 1", value = 3, min=1, max=24,step=0.5),
                             sliderInput(inputId="dm1", label = "months to complete MDA in village 2", value = 3, min=1, max=24,step=0.5)
@@ -89,7 +89,7 @@ ui <- fluidPage(
                             sliderInput(inputId="p1v", label = "proportion of total in village 1 (remaining is in village 2)", value = .5, min=0.01, max=.99,step=.1)
                      ),
                      column(3,
-                            radioButtons(inputId="VACon", label = "With vaccination: ", choices = c("No"=0, "Yes"=1), selected = 0, inline=TRUE),
+                            radioButtons(inputId="VACon", label = "With vaccination: ", choices = c("No"=0, "Yes"=1), selected = 1, inline=TRUE),
                             sliderInput(inputId="effv_1", label = "% protective efficacy of RTS,S with 1st dose", value = 75, min=0, max=100),
                             sliderInput(inputId="effv_2", label = "% protective efficacy of RTS,S with 2nd dose", value = 80, min=0, max=100),
                             sliderInput(inputId="vh", label = "half-life of vaccine protection (days)", value = 90, min=10, max=500,step=10)
@@ -97,7 +97,7 @@ ui <- fluidPage(
             ),
             tabPanel(title = strong("Interventions under trial: Focal MSAT (mobile)"),
                      column(3,
-                            checkboxInput(inputId="MSATon", label = "switch on MSAT for imported cases", value = FALSE),
+                            checkboxInput(inputId="MSATon", label = "switch on MSAT for imported cases", value = TRUE),
                             sliderInput(inputId="MSATscale", label = "years to scale up MSAT ", value = 1, min=.25, max=3, step=.25), 
                             sliderInput(inputId="covMSATi", label = "new coverage of MSAT (%)", value = 90, min=0, max=100,step=10)
                      ),

@@ -169,8 +169,10 @@ List modGMSrcpp(double t, NumericVector state, NumericVector parameters)
   double bh1=bh_max1/(1+alpha);
   
   // Additional file: Equation no.10
-  double beta0=seas*b*epsilonh*epsilonm*bh0/((bh0*epsilonh+deltam)*(gammam/(gammam+deltam)));
-  double beta1=seas*b*epsilonh*epsilonm*bh1/((bh1*epsilonh+deltam)*(gammam/(gammam+deltam)));
+  double beta0=b*epsilonh*epsilonm*bh0/((bh0*epsilonh+deltam)*(gammam/(gammam+deltam)));
+  double beta1=b*epsilonh*epsilonm*bh1/((bh1*epsilonh+deltam)*(gammam/(gammam+deltam)));
+  //double beta0=seas*b*epsilonh*epsilonm*bh0/((bh0*epsilonh+deltam)*(gammam/(gammam+deltam)));
+  //double beta1=seas*b*epsilonh*epsilonm*bh1/((bh1*epsilonh+deltam)*(gammam/(gammam+deltam)));
   
   double mu_out = mu+muC+muA+muU;
   
